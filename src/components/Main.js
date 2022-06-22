@@ -17,22 +17,21 @@ function Main(props) {
               setUserName(userData.name);
               setUserDescription(userData.about);
               setUserAvatar(userData.avatar);
-            }
-        )
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }, [])
 
     React.useEffect(() => {
         api.getInitialCards()
             .then((cardsData) => {
-              console.log(cardsData)
               setCards(cardsData); 
-            }
-        )
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }, [])
-
-
-
-
 
     return (
         <>
@@ -51,7 +50,8 @@ function Main(props) {
             <section className="elements">
                 {cards.map((card) => {
                     return (
-                        <Card key={card._id} link={card.link} name={card.name} likes={card.likes} />
+                        <Card key={card._id} link={card.link} name={card.name} likes={card.likes} onCardClick = {props.onCardClick}
+                        card = {props.selectCard} />
                     )
                     })
                 }
@@ -83,7 +83,7 @@ function Main(props) {
                 </label>
             </PopupWithForm>
 
-            <ImagePopup />
+            <ImagePopup card = {props.selectCard} onClose={props.onClose} link={props.link}/>
             
             <PopupWithForm name="remove-card" title="Вы уверены?">     
             </PopupWithForm>

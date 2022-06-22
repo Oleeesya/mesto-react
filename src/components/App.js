@@ -1,5 +1,3 @@
-// import logo from './logo.svg';
-// import './App.css';
 import React from 'react';
 import Header  from './Header';
 import Main  from './Main';
@@ -9,6 +7,7 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
+  const [selectedCard, setSelectCard] = React.useState(false);
 
   const handleClickAvatar = () => {
     setEditAvatarPopupOpen(true);
@@ -22,10 +21,15 @@ function App() {
     setAddPlacePopupOpen(true);
   }
 
+  const handleCardClick = (link) => {
+    setSelectCard(link);
+  }
+
   const closeAllPopups = () => {
     setAddPlacePopupOpen(false);
     setEditProfilePopupOpen(false);
     setEditAvatarPopupOpen(false);
+    setSelectCard(false);
   }
 
   return (
@@ -34,7 +38,8 @@ function App() {
             <Header />
             <Main onEditAvatar = {handleClickAvatar} onEditProfile = {handleClickProfile} onAddPlace = {handleClickPlace} 
             editProfilePopupOpen = {isEditProfilePopupOpen} editAvatarPopupOpen = {isEditAvatarPopupOpen}
-            addPlacePopupOpen = {isAddPlacePopupOpen} onClose = {closeAllPopups}/>
+            addPlacePopupOpen = {isAddPlacePopupOpen} onClose = {closeAllPopups} selectCard = {selectedCard}
+            onCardClick = {handleCardClick} />
             <Footer />
         </div>
     </div>
