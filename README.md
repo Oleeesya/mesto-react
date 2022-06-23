@@ -18,3 +18,7 @@
 * диалоговое окно (pop-up)
 * подключение проекта к серверу
 
+## Ссылка на GitHub Pages:
+
+https://oleeesya.github.io/mesto-react/
+
