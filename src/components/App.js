@@ -39,8 +39,6 @@ function App() {
         <div className="page">
             <Header />
             <Main onEditAvatar = {handleClickAvatar} onEditProfile = {handleClickProfile} onAddPlace = {handleClickPlace} 
-            editProfilePopupOpen = {isEditProfilePopupOpen} editAvatarPopupOpen = {isEditAvatarPopupOpen}
-            addPlacePopupOpen = {isAddPlacePopupOpen} onClose = {closeAllPopups} selectCard = {selectedCard}
             onCardClick = {handleCardClick} />
             <Footer />
 
