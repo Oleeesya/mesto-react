@@ -16,13 +16,11 @@ function Card(props) {
         props.onCardDelete(props.currentCard);
     }
 
-
     const isOwn = currentUser._id === props.currentCard.owner._id;
     const cardDeleteDuttonClassName = (`${isOwn ? 'elements__trash' : 'elements__trash_hidden'}`);
 
     const isLiked = props.likes.some(i => i._id === currentUser._id);
     const cardLikeButtonClassName = (`${isLiked ? 'elements__like elements__like_active' : 'elements__like'}`);
-
 
     return (
         <article className="elements__element">

@@ -1,23 +1,30 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import api from "../utils/API";
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from "./PopupWithForm";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import DeletePlacePopup from "./DeletePlacePopup";
+
 import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import { currentUserContext } from '../contexts/CurrentUserContext';
-import { cardsContext } from '../contexts/CardsContext';
-
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [isDeletePlacePopupOpen, setDeletePlacePopupOpen] = useState(false);
+
   const [selectedCard, setSelectCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+
+  const [currentCard, setcurrentCard] = React.useState('');
+  const setCardId = (cardInfo) => {
+    setcurrentCard(cardInfo);
+  }
 
   useEffect(() => {
     api.getUserInfo()
@@ -45,10 +52,16 @@ function App() {
     setSelectCard(link);
   }
 
+  const handleDeleteCardClick = (id) => {
+    setCardId(id)
+    setDeletePlacePopupOpen(true);
+  }
+
   const closeAllPopups = () => {
     setAddPlacePopupOpen(false);
     setEditProfilePopupOpen(false);
     setEditAvatarPopupOpen(false);
+    setDeletePlacePopupOpen(false);
     setSelectCard(null);
   }
 
@@ -92,8 +105,9 @@ function App() {
   function handleCardDelete(card) {
     api.deleteCard(card)
       .then(() => {
-        setCards(cards.filter(c => c._id != card._id))
-      })
+        setCards(cards.filter(c => c._id != card._id));
+        closeAllPopups();
+      }, [])
   }
 
   const handleAddPlace = (descriptionCard) => {
@@ -111,19 +125,19 @@ function App() {
           <Header />
 
           <Main onEditAvatar={handleClickAvatar} onEditProfile={handleClickProfile} onAddPlace={handleClickPlace}
-            onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
+            onCardClick={handleCardClick} openDeleteClick={handleDeleteCardClick} cards={cards} onCardLike={handleCardLike}
+          />
 
           <Footer />
 
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}></EditProfilePopup>
 
-          <cardsContext.Provider value={cards}>
-            <AddPlacePopup onAddPlace={handleAddPlace} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} ></AddPlacePopup>
-          </cardsContext.Provider>
+          <AddPlacePopup onAddPlace={handleAddPlace} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} cards={cards}></AddPlacePopup>
 
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
-          <PopupWithForm name="remove-card" title="Вы уверены?"></PopupWithForm>
+          <DeletePlacePopup name="remove-card" title="Вы уверены?" isOpen={isDeletePlacePopupOpen} onClose={closeAllPopups}
+            onCardDelete={handleCardDelete} id={currentCard}></DeletePlacePopup>
 
           <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}></EditAvatarPopup>
 

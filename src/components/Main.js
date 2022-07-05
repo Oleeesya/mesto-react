@@ -1,41 +1,9 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
 import Card from "./Card";
-import api from "../utils/API";
 import { currentUserContext } from '../contexts/CurrentUserContext';
-// import { cardsContext } from '../contexts/CardsContext';
-
 
 function Main(props) {
     const currentUser = React.useContext(currentUserContext);
-
-    // const [cards, setCards] = useState([]);
-
-    // useEffect(() => {
-    //     api.getInitialCards()
-    //         .then((cardsData) => {
-    //             setCards(cardsData);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         })
-    // }, [])
-
-    // function handleCardLike(card) {
-    //     const isLiked = card.likes.some(i => i._id === currentUser._id);
-
-    //     api.changeLikeCardStatus(card, !isLiked)
-    //         .then((newCard) => {
-    //             setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    //         })
-    // }
-
-    // function handleCardDelete(card) {
-    //     api.deleteCard(card)
-    //         .then(() => {
-    //             setCards(cards.filter( c => c._id!=card._id))
-    //         })
-    // }
 
     return (
         <>
@@ -53,19 +21,15 @@ function Main(props) {
             </section>
 
             <section className="elements">
-                {/* <cardsContext.Provider value={props.cards}> */}
+                {props.cards.map((card) => {
 
-                    {props.cards.map((card) => {
-
-                        return (
-                            <Card key={card._id} link={card.link} name={card.name} likes={card.likes} onCardClick={props.onCardClick}
-                                onCardDelete={ props.onCardDelete } currentCard={card} id={card._id} onCardLike={props.onCardLike} />
-
-                        )
-                    })
-
-                    }
-                {/* </cardsContext.Provider> */}
+                    return (
+                        <Card key={card._id} link={card.link} name={card.name} likes={card.likes} onCardClick={props.onCardClick}
+                            onCardDelete={props.openDeleteClick} currentCard={card} id={card._id} onCardLike={props.onCardLike}
+                        />
+                    )
+                })
+                }
 
             </section>
         </>
