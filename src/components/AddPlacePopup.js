@@ -2,15 +2,15 @@ import React from "react";
 import { useEffect, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function AddPlacePopup(props) {
+function AddPlacePopup({ isOpen, onAddPlace, onClose }) {
 
-  const [name, setName] = React.useState('');
-  const [path, setPath] = React.useState('');
+  const [name, setName] = useState('');
+  const [path, setPath] = useState('');
 
   useEffect(() => {
-    setName(props.cards.name);
-    setPath(props.cards.about);
-  }, [props.cards]);
+    setName("");
+    setPath("");
+  }, [isOpen]);
 
   function handleChangeName(e) {
     setName(e.target.value);
@@ -23,7 +23,7 @@ function AddPlacePopup(props) {
   function handleAddPlaceSubmit(e) {
     e.preventDefault();
 
-    props.onAddPlace({
+    onAddPlace({
       link: path,
       name: name
     });
@@ -31,7 +31,7 @@ function AddPlacePopup(props) {
 
   return (
 
-    <PopupWithForm name="create" title="Новое место" isOpen={props.isOpen} onClose={props.onClose}
+    <PopupWithForm name="create" title="Новое место" isOpen={isOpen} onClose={onClose}
       buttonText="Создать" onSubmit={handleAddPlaceSubmit}>
       <label className="popup__label">
         <input className="popup__input popup__input_edit_header" id="title-input" type="text" name="name"

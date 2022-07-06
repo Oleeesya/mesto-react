@@ -18,6 +18,8 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isDeletePlacePopupOpen, setDeletePlacePopupOpen] = useState(false);
 
+  const [cards, setCards] = useState([]);
+
   const [selectedCard, setSelectCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
 
@@ -70,7 +72,10 @@ function App() {
       .then((userData) => {
         setCurrentUser(userData);
         closeAllPopups();
-      }, [])
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   const handleUpdateAvatar = (userAvatar) => {
@@ -78,11 +83,13 @@ function App() {
       .then((newAvatar) => {
         setCurrentUser(newAvatar);
         closeAllPopups();
-      }, [])
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   //добавление новой карточки
-  const [cards, setCards] = useState([]);
   useEffect(() => {
     api.getInitialCards()
       .then((cardsData) => {
@@ -100,6 +107,9 @@ function App() {
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
       })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   function handleCardDelete(card) {
@@ -107,7 +117,10 @@ function App() {
       .then(() => {
         setCards(cards.filter(c => c._id != card._id));
         closeAllPopups();
-      }, [])
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   const handleAddPlace = (descriptionCard) => {
@@ -115,7 +128,10 @@ function App() {
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
-      }, [])
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   return (
